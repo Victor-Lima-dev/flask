@@ -4,7 +4,7 @@ import pandas as pd
 import json
 
 app = Flask(__name__)
-cors = CORS(app, origins=["https://localhost:7171"])
+cors = CORS(app, origins=["https://unipac-embalagem-checklist.up.railway.app"])
 
 
 def processar_tabela(tabela):
