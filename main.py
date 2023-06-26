@@ -30,15 +30,9 @@ def processar_tabela(tabela):
 
 
 
-    print(ferias)
 
 
 
-
-    colunas = ferias.columns.to_list()
-        # Mostra os índices e os valores das colunas
-    for i, col in enumerate(ferias):
-         print(i, col)
 
 
 
@@ -50,11 +44,8 @@ def processar_tabela(tabela):
     colunas = ["Nome Pessoal","Status1","Saldo","Inicio","Fim","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo"]
     ferias_periodo_1 = ferias_manipular1[colunas]
     ferias_periodo_1 = ferias_periodo_1.assign(Periodo=1)
-        #Quebrar a tabela a Segunda Vez
-        #colunas = ["Nome Pessoal", "Dias", "Desc","Status", "Saldo","Inicio.1","Fim.1"]
-        #ferias_periodo_2 = ferias_manipular2[colunas]
-        #ferias_periodo_2 = ferias_periodo_2.assign(Periodo=2)
-        #ferias_periodo_2.rename(columns={"Inicio.1":"Inicio", "Fim.1":"Fim"}, inplace=True)
+    ferias_periodo_1 = ferias_periodo_1.assign(SaldoString=ferias_periodo_1["Saldo"]) 
+       
 
 
 
@@ -64,20 +55,20 @@ def processar_tabela(tabela):
     ferias_periodo_2 = ferias_manipular2[colunas]
     ferias_periodo_2 = ferias_periodo_2.assign(Periodo=2)
     ferias_periodo_2.rename(columns={"Inicio1":"Inicio", "Fim1":"Fim"}, inplace=True)
+    ferias_periodo_2 = ferias_periodo_2.assign(SaldoString=ferias_periodo_2["Saldo"])
+
+    ferias_periodo_2 = ferias_periodo_2.assign(Saldo=0) # Altera o valor da coluna Saldo para 0
 
 
-
-        #Quebrar a tabela a Terceira Vez
-        #colunas = ["Nome Pessoal", "Dias", "Desc","Status", "Saldo","Inicio.2","Fim.2"]
-        #ferias_periodo_3 = ferias_manipular3[colunas]
-        #ferias_periodo_3 = ferias_periodo_3.assign(Periodo=3)
-        #ferias_periodo_3.rename(columns={"Inicio.2":"Inicio", "Fim.2":"Fim"}, inplace=True)
 
          # Usando o índice das colunas em vez dos nomes
     colunas = ["Nome Pessoal","Status1","Saldo","Inicio2","Fim2","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo"]
     ferias_periodo_3 = ferias_manipular3[colunas]
     ferias_periodo_3 = ferias_periodo_3.assign(Periodo=3)
     ferias_periodo_3.rename(columns={"Inicio2":"Inicio", "Fim2":"Fim"}, inplace=True)
+    ferias_periodo_3 = ferias_periodo_3.assign(SaldoString=ferias_periodo_3["Saldo"])
+
+    ferias_periodo_3 = ferias_periodo_3.assign(Saldo=0) # Altera o valor da coluna Saldo para 0 
 
 
 
