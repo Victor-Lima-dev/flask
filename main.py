@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import pandas as pd
 import json
+from datetime import datetime
+
 
 app = Flask(__name__)
 cors = CORS(app, origins=["https://unipac-embalagem-checklist.up.railway.app"])
@@ -82,7 +84,9 @@ def processar_tabela(tabela):
     # Concatenar os dois data frames
     final = pd.concat([ferias_sem_nulos, df])
     final.rename(columns={"Status1":"Status"}, inplace=True)
+    final['ExtracaoDados'] = pd.to_datetime(datetime.now().date())
     final = final.fillna(0)
+
 
     
     return final
