@@ -27,6 +27,11 @@ def processar_tabela(tabela):
     colunas[25] = "Inicio2"
     colunas[26] = "Fim2"
     colunas[14] = "Status1"
+    colunas[17] = "Dias0"
+
+    colunas[22] = "Dias1"
+
+    colunas[27] = "Dias2"
     # você pode atribuir a lista ao atributo columns do seu DataFrame
     ferias.columns = colunas
 
@@ -43,7 +48,8 @@ def processar_tabela(tabela):
     ferias_manipular2 = ferias[colunas]
     ferias_manipular3 = ferias[colunas]
         #Quebrar a Tabela a Primeira vez
-    colunas = ["Nome Pessoal","Status1","Saldo","Inicio","Fim","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo"]
+    colunas = ["Nome Pessoal", "Status1", "Saldo","Inicio","Fim","Inicio1","Fim1","Inicio2", "Fim2","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo","Dias0","Dias1","Dias2"]
+
     ferias_periodo_1 = ferias_manipular1[colunas]
     ferias_periodo_1 = ferias_periodo_1.assign(Periodo=1)
     ferias_periodo_1 = ferias_periodo_1.assign(SaldoString=ferias_periodo_1["Saldo"]) 
@@ -53,10 +59,10 @@ def processar_tabela(tabela):
 
 
         # Usando o índice das colunas em vez dos nomes
-    colunas = ["Nome Pessoal","Status1","Saldo","Inicio1","Fim1","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo"]
+    colunas = ["Nome Pessoal","Status1", "Saldo","Inicio1","Fim1","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo","Dias1"]
     ferias_periodo_2 = ferias_manipular2[colunas]
     ferias_periodo_2 = ferias_periodo_2.assign(Periodo=2)
-    ferias_periodo_2.rename(columns={"Inicio1":"Inicio", "Fim1":"Fim"}, inplace=True)
+    ferias_periodo_2.rename(columns={"Inicio1":"Inicio", "Fim1":"Fim", "Dias1":"Dias0"}, inplace=True)
     ferias_periodo_2 = ferias_periodo_2.assign(SaldoString=ferias_periodo_2["Saldo"])
 
     ferias_periodo_2 = ferias_periodo_2.assign(Saldo=0) # Altera o valor da coluna Saldo para 0
@@ -64,10 +70,10 @@ def processar_tabela(tabela):
 
 
          # Usando o índice das colunas em vez dos nomes
-    colunas = ["Nome Pessoal","Status1","Saldo","Inicio2","Fim2","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo"]
+    colunas = ["Nome Pessoal","Status1", "Saldo","Inicio2","Fim2","Ini. Per. Aquis.","Fim Per. Aquis.","Desc. Centro de Custo","Dias2"]
     ferias_periodo_3 = ferias_manipular3[colunas]
     ferias_periodo_3 = ferias_periodo_3.assign(Periodo=3)
-    ferias_periodo_3.rename(columns={"Inicio2":"Inicio", "Fim2":"Fim"}, inplace=True)
+    ferias_periodo_3.rename(columns={"Inicio2":"Inicio", "Fim2":"Fim", "Dias2":"Dias0"}, inplace=True)
     ferias_periodo_3 = ferias_periodo_3.assign(SaldoString=ferias_periodo_3["Saldo"])
 
     ferias_periodo_3 = ferias_periodo_3.assign(Saldo=0) # Altera o valor da coluna Saldo para 0 
@@ -83,7 +89,7 @@ def processar_tabela(tabela):
     df = df.drop_duplicates(subset=["Nome Pessoal","Status1"])
     # Concatenar os dois data frames
     final = pd.concat([ferias_sem_nulos, df])
-    final.rename(columns={"Status1":"Status"}, inplace=True)
+    final.rename(columns={"Status1":"Status", "Dias0":"Dias"}, inplace=True) # Renomeia a coluna status1 como status
     final['ExtracaoDados'] = pd.to_datetime(datetime.now().date())
     final = final.fillna(0)
 
