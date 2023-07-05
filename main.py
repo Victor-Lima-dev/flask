@@ -120,7 +120,7 @@ def processar_tabela(tabela):
     #criar um loop para cada mês da lista
     for mes in meses:
         #criar uma variável para armazenar o número do mês correspondente
-        num_mes = datetime.datetime.strptime(mes, '%B').month
+        num_mes = datetime.strptime(mes, '%B').month
         #se o número do mês for maior ou igual ao mês atual ou o ano for igual a 2024, então fazer as projeções
         if num_mes > mes_atual or (df['Fim Per. Aquis.'].dt.year == 2024).any():
             #abrir df como Fereias-response.xlsx
