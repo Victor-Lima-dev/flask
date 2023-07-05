@@ -102,7 +102,7 @@ def processar_tabela(tabela):
     dfOriginal['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
 
     #quero o nome do mes atual
-    mes_atual = datetime.datetime.now().strftime('%B')
+    mes_atual = datetime.now().strftime('%B')
 
     dfOriginal['Projeção'] = mes_atual + ' 2023'
 
@@ -113,7 +113,7 @@ def processar_tabela(tabela):
     #criar uma lista com os meses que você quer gerar os arquivos excel
     meses = ["August","July","September","October","November","December","June", "May", "April", "March", "February", "January"]
     #criar uma variável para armazenar o mês atual
-    mes_atual = datetime.datetime.now().month
+    mes_atual = datetime.now().month
     mes_dezembro = 12
     mes_janeiro = 1
 
