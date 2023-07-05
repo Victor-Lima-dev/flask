@@ -97,6 +97,8 @@ def processar_tabela(tabela):
     
 
     dfOriginal = final
+    dfOriginal['Saldo'] = dfOriginal['Saldo'].astype(float)
+    dfOriginal['Dias'] = dfOriginal['Dias'].astype(float)
     #transformar a coluna Inicio em data e a coluna Fim Per. Aquis. em data
     dfOriginal['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
     dfOriginal['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
@@ -125,6 +127,9 @@ def processar_tabela(tabela):
         if num_mes > mes_atual or (df['Fim Per. Aquis.'].dt.year == 2024).any():
             #abrir df como Fereias-response.xlsx
             df = final
+            df['Saldo'] = df['Saldo'].astype(float)
+            df['Dias'] = df['Dias'].astype(float)
+
             #transformar a coluna Fim Per. Aquis. em data
             df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
             #transformar a coluna Inicio em data
@@ -170,6 +175,8 @@ def processar_tabela(tabela):
 
             #abrir df como Fereias-response.xlsx
             df = final
+            df['Saldo'] = df['Saldo'].astype(float)
+            df['Dias'] = df['Dias'].astype(float)
             #transformar a coluna Fim Per. Aquis. em data
             df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
             #transformar a coluna Inicio em data
