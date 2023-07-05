@@ -94,7 +94,149 @@ def processar_tabela(tabela):
 
 
     
-    return final
+    
+
+    dfOriginal = final
+    #transformar a coluna Inicio em data e a coluna Fim Per. Aquis. em data
+    dfOriginal['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
+    dfOriginal['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
+
+    #quero o nome do mes atual
+    mes_atual = datetime.datetime.now().strftime('%B')
+
+    dfOriginal['Projeção'] = mes_atual + ' 2023'
+
+
+    dfConcat = dfOriginal
+
+
+    #criar uma lista com os meses que você quer gerar os arquivos excel
+    meses = ["August","July","September","October","November","December","June", "May", "April", "March", "February", "January"]
+    #criar uma variável para armazenar o mês atual
+    mes_atual = datetime.datetime.now().month
+    mes_dezembro = 12
+    mes_janeiro = 1
+
+    #criar um loop para cada mês da lista
+    for mes in meses:
+        #criar uma variável para armazenar o número do mês correspondente
+        num_mes = datetime.datetime.strptime(mes, '%B').month
+        #se o número do mês for maior ou igual ao mês atual ou o ano for igual a 2024, então fazer as projeções
+        if num_mes > mes_atual or (df['Fim Per. Aquis.'].dt.year == 2024).any():
+            #abrir df como Fereias-response.xlsx
+            df = final
+            #transformar a coluna Fim Per. Aquis. em data
+            df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
+            #transformar a coluna Inicio em data
+            df['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
+            #transformar a coluna Saldo em float
+            df['Saldo'] = df['Saldo'].astype(float)
+            #substituir os valores nulos ou vazios por 0
+            df['Saldo'] = df['Saldo'].fillna(0)
+
+
+            #colocar uma coluna SaldoRetirado com o valor de Saldo se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 igual ao if anterior
+            df.loc[(df['Fim Per. Aquis.'].dt.month <= num_mes) & (df['Fim Per. Aquis.'].dt.year == 2023) & (df['Status'] != 'Vencidas'), 'Adicionado'] = df['Saldo']
+            #mudar o valor de status para Vencida se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 e se o status for diferente de Vencida
+            df.loc[(df['Fim Per. Aquis.'].dt.month <= num_mes) & (df['Fim Per. Aquis.'].dt.year == 2023) & (df['Status'] != 'Vencidas'), 'Status'] = 'Vencidas'
+            #colocar como valor da coluna Projeção o nome do mês
+            df['Projeção'] = mes + ' 2023'
+            df['AnoProjeção'] = 2023
+
+             #colocar uma coluna SaldoRetirado com o valor de Saldo se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 igual ao if anterior
+            df.loc[(df['Fim Per. Aquis.'].dt.month <= num_mes + 1) & (df['Fim Per. Aquis.'].dt.year == 2023) & (df['Status'] != 'Vencidas'), 'Saldo a mais do Próximo Mes'] = df['Saldo']
+            #mudar o valor de status para Vencida se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 e se o status for diferente de Vencida
+            df.loc[(df['Fim Per. Aquis.'].dt.month <= num_mes + 1) & (df['Fim Per. Aquis.'].dt.year == 2023) & (df['Status'] != 'Vencidas'), 'AnaliseComparação'] = mes
+            #coloca que se o mes for igual a 12, então o ano da projeção é 2024 e pega o mes de janeiro
+            if num_mes == mes_dezembro:
+                df.loc[(df['Fim Per. Aquis.'].dt.month == mes_janeiro) & (df['Fim Per. Aquis.'].dt.year == 2024) & (df['Status'] != 'Vencidas'), 'Saldo a mais do Próximo Mes'] = df['Saldo']
+
+
+
+
+            #mudar o valor de saldo para (Saldo - valor da coluna Dias) se o mesmo da data estiver entre o mês anterior e o mês da projeção e o ano for igual a 2023
+            df.loc[(df['Inicio'].dt.month >= mes_atual) & (df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2023), 'Saldo'] = df['Saldo'] - df['Dias']
+            #criar uma nova coluna com os dias que foram tirados do saldo, com as mesma condições do if anterior
+            df.loc[(df['Inicio'].dt.month >= mes_atual) & (df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2023), 'DiasTirados'] = df['Dias']
+             #mudar o valor de saldo para (Saldo - valor da coluna Dias) se o mesmo da data estiver entre o mês anterior e o mês da projeção e o ano for igual a 2023
+            df.loc[(df['Inicio'].dt.month == num_mes + 1) & (df['Inicio'].dt.year == 2023), 'Dias Tirados do Proximo Mes'] = df['Dias']
+
+            if num_mes == mes_dezembro:
+                df.loc[(df['Inicio'].dt.month == mes_janeiro) & (df['Inicio'].dt.year == 2024), 'Dias Tirados do Proximo Mes'] = df['Dias']
+
+            #concatenar df com dfOriginal
+
+            dfConcat = pd.concat([df, dfConcat])
+
+            #abrir df como Fereias-response.xlsx
+            df = final
+            #transformar a coluna Fim Per. Aquis. em data
+            df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
+            #transformar a coluna Inicio em data
+            df['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
+             #transformar a coluna Saldo em float
+            df['Saldo'] = df['Saldo'].astype(float)
+            #substituir os valores nulos ou vazios por 0
+            df['Saldo'] = df['Saldo'].fillna(0)
+
+            #colocar uma coluna SaldoRetirado com o valor de Saldo se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 igual ao if anterior
+            df.loc[(df['Fim Per. Aquis.'].dt.year == 2023) | ((df['Fim Per. Aquis.'].dt.month <= num_mes) & (df['Fim Per. Aquis.'].dt.year <= 2024)) & (df['Status'] != 'Vencidas'), 'Adicionado'] = df['Saldo']
+            #mudar o valor de status para Vencida se o mes da data for menor ou igual ao número do mês e o ano for igual a 2024 e se o status for diferente de Vencida
+            df.loc[(df['Fim Per. Aquis.'].dt.year == 2023) | ((df['Fim Per. Aquis.'].dt.month <= num_mes) & (df['Fim Per. Aquis.'].dt.year == 2024)) & (df['Status'] != 'Vencidas'), 'Status'] = 'Vencidas'
+
+            df.loc[((df['Fim Per. Aquis.'].dt.month <= num_mes + 1) & (df['Fim Per. Aquis.'].dt.year == 2024)) & (df['Status'] != 'Vencidas'), 'Saldo a mais do Próximo Mes'] = df['Saldo']
+
+
+
+
+
+
+
+
+
+
+            #colocar como valor da coluna Projeção o nome do mês
+            df['Projeção'] = mes + ' 2024'
+            df['AnoProjeção'] = "2024"
+
+
+    # Supondo que você já tenha definido o dataframe e as variáveis
+
+    # Verificando se há alguma linha com o início igual a 2024
+            if (df['Inicio'].dt.year == 2024).any():
+
+                # Executando o código para os meses entre o mês atual e dezembro de 2023
+                df.loc[(df['Inicio'].dt.month.isin(range(mes_atual, mes_dezembro + 1))) & (df['Inicio'].dt.year == 2023), "Saldo"] = df['Saldo'] - df['Dias']
+                df.loc[(df['Inicio'].dt.month.isin(range(mes_atual, mes_dezembro + 1))) & (df['Inicio'].dt.year == 2023), "DiasTirados"] = df['Dias']
+
+
+
+
+                df.loc[(df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2024), 'Saldo'] = df['Saldo'] - df['Dias']
+                #criar uma nova coluna com os dias que foram tirados do saldo, com as mesma condições do if anterior
+                df.loc[(df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2024), 'DiasTirados'] = df['Dias']
+
+                #mudar o valor de saldo para (Saldo - valor da coluna Dias) se o mesmo da data estiver entre o mês anterior e o mês da projeção e o ano for igual a 2023
+                df.loc[(df['Inicio'].dt.month == num_mes + 1) & (df['Inicio'].dt.year == 2024), 'Dias Tirados do Proximo Mes'] = df['Dias']
+
+
+
+            dfConcat = pd.concat([df, dfConcat])
+
+
+            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    return dfConcat
 
 @app.route('/api', methods=['POST'])
 @cross_origin()
