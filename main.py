@@ -241,7 +241,7 @@ def processar_tabela(tabela):
     
     
     
-    
+    dfConcat = dfConcat.astype(str)
     return dfConcat
 
 @app.route('/api', methods=['POST'])
