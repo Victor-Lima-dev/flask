@@ -101,6 +101,9 @@ def processar_projecao(tabela):
     
 
     dfOriginal = processar_tabela(tabela)
+    #mostrar o dfOriginal por completo
+    pd.set_option('display.max_columns', None)
+    
     dfOriginal['Saldo'] = dfOriginal['Saldo'].astype(float)
     dfOriginal['Dias'] = dfOriginal['Dias'].astype(float)
     #transformar a coluna Inicio em data e a coluna Fim Per. Aquis. em data
