@@ -109,7 +109,7 @@ def processar_projecao(tabela):
 
     
 
-    dfOriginal['Projeção'] = ' '
+    dfOriginal['Projeção'] = ' 2023'
 
 
     dfConcat = dfOriginal
