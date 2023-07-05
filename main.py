@@ -326,8 +326,11 @@ def processar_projecao(tabela):
     
     
     
-    print(dfConcat)
-    
+   
+    #mostrar toda a coluna de saldo
+    pd.set_option('display.max_rows', dfConcat.shape[0]+1)
+    #exibir o resultado
+    print(dfConcat)    
     dfConcat = dfConcat.astype(str)
     return dfConcat
 
