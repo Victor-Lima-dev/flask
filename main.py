@@ -124,6 +124,18 @@ def processar_projecao(tabela):
 
     #criar um loop para cada mês da lista
     for mes in meses:
+        df = processar_tabela(tabela)
+        df['Saldo'] = df['Saldo'].astype(float)
+        df['Dias'] = df['Dias'].astype(float)
+
+        #transformar a coluna Fim Per. Aquis. em data
+        df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
+        #transformar a coluna Inicio em data
+        df['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
+        #transformar a coluna Saldo em float
+        df['Saldo'] = df['Saldo'].astype(float)
+            #substituir os valores nulos ou vazios por 0
+        df['Saldo'] = df['Saldo'].fillna(0)
         #criar uma variável para armazenar o número do mês correspondente
         num_mes = datetime.strptime(mes, '%B').month
         #se o número do mês for maior ou igual ao mês atual ou o ano for igual a 2024, então fazer as projeções
