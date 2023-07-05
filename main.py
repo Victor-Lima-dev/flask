@@ -258,6 +258,10 @@ def processar_projecao(tabela):
             #concatenar df com dfOriginal
 
             dfConcat = pd.concat([df, dfConcat])
+            #somar a coluna saldo
+            saldo = df['Saldo'].sum()
+            #exibir o saldo
+            print(saldo)
 
             #abrir df como Fereias-response.xlsx
             df = final
@@ -326,15 +330,7 @@ def processar_projecao(tabela):
     
     
     
-    #somar os valores da coluna saldo
-    dfConcat['Saldo'] = dfConcat['Saldo'].astype(float)
-    #exibir o resultado
-    print(dfConcat['Saldo'].sum())
-    #mostrar toda a coluna de saldo
-    pd.set_option('display.max_rows', dfConcat.shape[0]+1)
-    #exibir o resultado
-    print(dfConcat)    
-    dfConcat = dfConcat.astype(str)
+   
     return dfConcat
 
 
