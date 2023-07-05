@@ -350,7 +350,7 @@ def api():
 @app.route('/api2', methods=['POST'])
 @cross_origin()
 
-def api():
+def api2():
     tabela = request.get_json()
     
     
