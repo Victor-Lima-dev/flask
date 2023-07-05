@@ -107,16 +107,16 @@ def processar_projecao(tabela):
     dfOriginal['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
     dfOriginal['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
 
-    print(dfOriginal)
+    
 
-    dfOriginal['Projeção'] = ' 2023'
+    dfOriginal['Projeção'] = ' '
 
 
     dfConcat = dfOriginal
 
 
     #criar uma lista com os meses que você quer gerar os arquivos excel
-    meses = ["August","August","July","September","October","November","December","June", "May", "April", "March", "February", "January"]
+    meses = ["August","July","September","October","November","December","June", "May", "April", "March", "February", "January"]
     #criar uma variável para armazenar o mês atual
     mes_atual = datetime.now().month
     mes_dezembro = 12
