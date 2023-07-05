@@ -326,7 +326,10 @@ def processar_projecao(tabela):
     
     
     
-   
+    #somar os valores da coluna saldo
+    dfConcat['Saldo'] = dfConcat['Saldo'].astype(float)
+    #exibir o resultado
+    print(dfConcat['Saldo'].sum())
     #mostrar toda a coluna de saldo
     pd.set_option('display.max_rows', dfConcat.shape[0]+1)
     #exibir o resultado
