@@ -101,9 +101,8 @@ def processar_projecao(tabela):
     
 
     dfOriginal = processar_tabela(tabela)
-    #mostrar o dfOriginal por completo
-    pd.set_option('display.max_columns', None)
     
+
     dfOriginal['Saldo'] = dfOriginal['Saldo'].astype(float)
     dfOriginal['Dias'] = dfOriginal['Dias'].astype(float)
     #transformar a coluna Inicio em data e a coluna Fim Per. Aquis. em data
@@ -146,6 +145,7 @@ def processar_projecao(tabela):
             #substituir os valores nulos ou vazios por 0
             df['Saldo'] = df['Saldo'].fillna(0)
 
+            print(num_mes)
 
             #colocar uma coluna SaldoRetirado com o valor de Saldo se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 igual ao if anterior
             df.loc[(df['Fim Per. Aquis.'].dt.month <= num_mes) & (df['Fim Per. Aquis.'].dt.year == 2023) & (df['Status'] != 'Vencidas'), 'Adicionado'] = df['Saldo']
