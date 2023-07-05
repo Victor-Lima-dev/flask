@@ -116,7 +116,7 @@ def processar_projecao(tabela):
 
 
     #criar uma lista com os meses que você quer gerar os arquivos excel
-    meses = ["August","July","September","October","November","December","June", "May", "April", "March", "February", "January"]
+    meses = ["August","August","July","September","October","November","December","June", "May", "April", "March", "February", "January"]
     #criar uma variável para armazenar o mês atual
     mes_atual = datetime.now().month
     mes_dezembro = 12
