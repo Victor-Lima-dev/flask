@@ -103,10 +103,9 @@ def processar_tabela(tabela):
     dfOriginal['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
     dfOriginal['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
 
-    #quero o nome do mes atual
-    mes_atual = datetime.now().strftime('%B')
+    
 
-    dfOriginal['Projeção'] = mes_atual + ' 2023'
+    dfOriginal['Projeção'] = ' 2023'
 
 
     dfConcat = dfOriginal
