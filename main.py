@@ -252,7 +252,9 @@ def processar_projecao(tabela):
     #transformar a coluna Inicio em string
     dfConcat['Inicio'] = dfConcat['Inicio'].dt.strftime('%d/%m/%Y')
 #transformar a coluna Fim Per. Aquis. em string
-    dfConcat['Fim Per. Aquis.'] = dfConcat['Fim Per. Aquis.'].dt.strftime('%d/%m/%Y')  
+    dfConcat['Fim Per. Aquis.'] = dfConcat['Fim Per. Aquis.'].dt.strftime('%d/%m/%Y') 
+    #substituir nan por 0
+    dfConcat = dfConcat.fillna(0) 
     return dfConcat
 
 
