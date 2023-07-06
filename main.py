@@ -145,7 +145,7 @@ def processar_projecao(tabela):
             #substituir os valores nulos ou vazios por 0
             df['Saldo'] = df['Saldo'].fillna(0)
 
-            prfloat(num_mes)
+            
 
             #colocar uma coluna SaldoRetirado com o valor de Saldo se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 igual ao if anterior
             df.loc[(df['Fim Per. Aquis.'].dt.month <= num_mes) & (df['Fim Per. Aquis.'].dt.year == 2023) & (df['Status'] != 'Vencidas'), 'Adicionado'] = df['Saldo']
