@@ -103,8 +103,8 @@ def processar_projecao(tabela):
     dfOriginal = processar_tabela(tabela)
     
 
-    dfOriginal['Saldo'] = dfOriginal['Saldo'].astype(float)
-    dfOriginal['Dias'] = dfOriginal['Dias'].astype(float)
+    dfOriginal['Saldo'] = dfOriginal['Saldo'].astype(int)
+    dfOriginal['Dias'] = dfOriginal['Dias'].astype(int)
     #transformar a coluna Inicio em data e a coluna Fim Per. Aquis. em data
     dfOriginal['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
     dfOriginal['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
@@ -133,15 +133,15 @@ def processar_projecao(tabela):
         if num_mes > mes_atual or (df['Fim Per. Aquis.'].dt.year == 2024).any():
             #abrir df como Fereias-response.xlsx
             df = processar_tabela(tabela)
-            df['Saldo'] = df['Saldo'].astype(float)
-            df['Dias'] = df['Dias'].astype(float)
+            df['Saldo'] = df['Saldo'].astype(int)
+            df['Dias'] = df['Dias'].astype(int)
 
             #transformar a coluna Fim Per. Aquis. em data
             df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
             #transformar a coluna Inicio em data
             df['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
-            #transformar a coluna Saldo em float
-            df['Saldo'] = df['Saldo'].astype(float)
+            #transformar a coluna Saldo em int
+            df['Saldo'] = df['Saldo'].astype(int)
             #substituir os valores nulos ou vazios por 0
             df['Saldo'] = df['Saldo'].fillna(0)
 
@@ -167,9 +167,9 @@ def processar_projecao(tabela):
 
 
             #mudar o valor de saldo para (Saldo - valor da coluna Dias) se o mesmo da data estiver entre o mês anterior e o mês da projeção e o ano for igual a 2023
-            df.loc[(df['Inicio'].dt.month >= mes_atual) & (df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2023), 'Saldo'] = df['Saldo'] - df['Dias']
+            df.loc[(df['Inicio'].dt.month > mes_atual) & (df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2023), 'Saldo'] = df['Saldo'] - df['Dias']
             #criar uma nova coluna com os dias que foram tirados do saldo, com as mesma condições do if anterior
-            df.loc[(df['Inicio'].dt.month >= mes_atual) & (df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2023), 'DiasTirados'] = df['Dias']
+            df.loc[(df['Inicio'].dt.month > mes_atual) & (df['Inicio'].dt.month <= num_mes) & (df['Inicio'].dt.year == 2023), 'DiasTirados'] = df['Dias']
              #mudar o valor de saldo para (Saldo - valor da coluna Dias) se o mesmo da data estiver entre o mês anterior e o mês da projeção e o ano for igual a 2023
             df.loc[(df['Inicio'].dt.month == num_mes + 1) & (df['Inicio'].dt.year == 2023), 'Dias Tirados do Proximo Mes'] = df['Dias']
 
@@ -182,14 +182,14 @@ def processar_projecao(tabela):
 
             #abrir df como Fereias-response.xlsx
             df = processar_tabela(tabela)
-            df['Saldo'] = df['Saldo'].astype(float)
-            df['Dias'] = df['Dias'].astype(float)
+            df['Saldo'] = df['Saldo'].astype(int)
+            df['Dias'] = df['Dias'].astype(int)
             #transformar a coluna Fim Per. Aquis. em data
             df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
             #transformar a coluna Inicio em data
             df['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
-             #transformar a coluna Saldo em float
-            df['Saldo'] = df['Saldo'].astype(float)
+             #transformar a coluna Saldo em int
+            
             #substituir os valores nulos ou vazios por 0
             df['Saldo'] = df['Saldo'].fillna(0)
 
@@ -220,8 +220,8 @@ def processar_projecao(tabela):
             if (df['Inicio'].dt.year == 2024).any():
 
                 # Executando o código para os meses entre o mês atual e dezembro de 2023
-                df.loc[(df['Inicio'].dt.month.isin(range(mes_atual, mes_dezembro + 1))) & (df['Inicio'].dt.year == 2023), "Saldo"] = df['Saldo'] - df['Dias']
-                df.loc[(df['Inicio'].dt.month.isin(range(mes_atual, mes_dezembro + 1))) & (df['Inicio'].dt.year == 2023), "DiasTirados"] = df['Dias']
+                df.loc[(df['Inicio'].dt.month.isin(range(mes_atual + 1, mes_dezembro + 1))) & (df['Inicio'].dt.year == 2023), "Saldo"] = df['Saldo'] - df['Dias']
+                df.loc[(df['Inicio'].dt.month.isin(range(mes_atual + 1 , mes_dezembro + 1))) & (df['Inicio'].dt.year == 2023), "DiasTirados"] = df['Dias']
 
 
 
