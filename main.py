@@ -103,8 +103,8 @@ def processar_projecao(tabela):
     dfOriginal = processar_tabela(tabela)
     
 
-    dfOriginal['Saldo'] = dfOriginal['Saldo'].astype(int)
-    dfOriginal['Dias'] = dfOriginal['Dias'].astype(int)
+    dfOriginal['Saldo'] = dfOriginal['Saldo'].astype(float)
+    dfOriginal['Dias'] = dfOriginal['Dias'].astype(float)
     #transformar a coluna Inicio em data e a coluna Fim Per. Aquis. em data
     dfOriginal['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
     dfOriginal['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
@@ -133,19 +133,19 @@ def processar_projecao(tabela):
         if num_mes > mes_atual or (df['Fim Per. Aquis.'].dt.year == 2024).any():
             #abrir df como Fereias-response.xlsx
             df = processar_tabela(tabela)
-            df['Saldo'] = df['Saldo'].astype(int)
-            df['Dias'] = df['Dias'].astype(int)
+            df['Saldo'] = df['Saldo'].astype(float)
+            df['Dias'] = df['Dias'].astype(float)
 
             #transformar a coluna Fim Per. Aquis. em data
             df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
             #transformar a coluna Inicio em data
             df['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
-            #transformar a coluna Saldo em int
-            df['Saldo'] = df['Saldo'].astype(int)
+            #transformar a coluna Saldo em float
+            df['Saldo'] = df['Saldo'].astype(float)
             #substituir os valores nulos ou vazios por 0
             df['Saldo'] = df['Saldo'].fillna(0)
 
-            print(num_mes)
+            prfloat(num_mes)
 
             #colocar uma coluna SaldoRetirado com o valor de Saldo se o mes da data for menor ou igual ao número do mês e o ano for igual a 2023 igual ao if anterior
             df.loc[(df['Fim Per. Aquis.'].dt.month <= num_mes) & (df['Fim Per. Aquis.'].dt.year == 2023) & (df['Status'] != 'Vencidas'), 'Adicionado'] = df['Saldo']
@@ -182,13 +182,13 @@ def processar_projecao(tabela):
 
             #abrir df como Fereias-response.xlsx
             df = processar_tabela(tabela)
-            df['Saldo'] = df['Saldo'].astype(int)
-            df['Dias'] = df['Dias'].astype(int)
+            df['Saldo'] = df['Saldo'].astype(float)
+            df['Dias'] = df['Dias'].astype(float)
             #transformar a coluna Fim Per. Aquis. em data
             df['Fim Per. Aquis.'] = pd.to_datetime(dfOriginal['Fim Per. Aquis.'], format="%d/%m/%Y", errors='coerce')
             #transformar a coluna Inicio em data
             df['Inicio'] = pd.to_datetime(dfOriginal['Inicio'], format="%d/%m/%Y", errors='coerce')
-             #transformar a coluna Saldo em int
+             #transformar a coluna Saldo em float
             
             #substituir os valores nulos ou vazios por 0
             df['Saldo'] = df['Saldo'].fillna(0)
