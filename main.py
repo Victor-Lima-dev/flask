@@ -130,7 +130,7 @@ def processar_projecao(tabela):
         #criar uma variável para armazenar o número do mês correspondente
         num_mes = datetime.strptime(mes, '%B').month
         #se o número do mês for maior ou igual ao mês atual ou o ano for igual a 2024, então fazer as projeções
-        if num_mes > mes_atual or (df['Fim Per. Aquis.'].dt.year == 2024).any():
+        if num_mes > mes_atual or (dfOriginal['Fim Per. Aquis.'].dt.year == 2024).any():
             #abrir df como Fereias-response.xlsx
             df = processar_tabela(tabela)
             df['Saldo'] = df['Saldo'].astype(float)
